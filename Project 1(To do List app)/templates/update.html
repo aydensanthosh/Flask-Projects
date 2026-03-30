@@ -8,35 +8,5 @@
         <input type="date" name="date" id="date" value="{{task.due_date.date()}}">
         <input type="submit" value="Update">
     </form>
-    <h1>Task Master</h1>
-    {%if tasks|length < 1 %}
-    <h4>There aren't any tasks yet. Create one now!!</h4>
-    {%else %}
-    <table>
-        <tr>
-            <th>Task</th>
-            <th>Due Date:<br>(YYYY-MM-DD)</th>
-            <th>Added: <br>(YYYY-MM-DD)</th>
-            <th>Actions</th>
-        </tr>
-        {% for task in tasks %}  <!-- Fixed variable name (task not tasks) -->
-        <tr>
-            <td>{{ task.content }}</td>
-            <td>{{task.due_date.date()}}</td>
-            <td>{{ task.date_created.date()}}</td>
-            <td>
-                <a href="/delete/{{task.id}}">Delete</a>
-                <br>
-                <a href="/update/{{task.id}}">Update</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    {%endif%}
-    <form action="/" method="POST">
-        Task Description:<input type="text" name="content" id="content">
-        <br>Due Date:<input type="date" name="date" id="date"><br><br>
-        <input type="submit" value="Add Task">
-    </form>
 </div>  <!-- Close the content div here -->
 {% endblock %}

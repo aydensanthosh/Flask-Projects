@@ -1,8 +1,10 @@
-# 🚀 Flask To-Do App
+# 🚀 Flask Projects:
 
-A clean and minimal To-Do List Web Application built using Flask and SQLAlchemy, designed to help users manage tasks efficiently with deadlines.
+Using Flask to understand how CRUD apps work and later use them to solve real problem worlds.
 
-## 📌 Features
+## Project 1 [To-do List App (Task Master)]
+
+### 📌 Features
 - ✅ Add new tasks with due dates
 - 📝 Update existing tasks
 - ❌ Delete tasks
@@ -13,13 +15,13 @@ A clean and minimal To-Do List Web Application built using Flask and SQLAlchemy,
 
 
 sfmke
-## 🛠️ Tech Stack
+### 🛠️ Tech Stack
 - Backend: Flask
 - Database: SQLite (via SQLAlchemy ORM)
 - Frontend: HTML (Jinja2 Templates)
 - Language: Python
 
-## 📂 Project Structure
+### 📂 Project Structure
 ```bash
 To-Do-App/
 │── app.py              # Main application file
@@ -30,7 +32,7 @@ To-Do-App/
 │── static/             # Static files (CSS, JS, images)
 └── README.md           # Project documentation
 ```
-## ⚙️ Installation & Setup
+### ⚙️ Installation & Setup
 Clone the repository
 ```bash
 git clone https://github.com/your-username/flask-todo-app.git
@@ -47,7 +49,7 @@ python app.py
 Open in browser:
 <a href="http://127.0.0.1:5000/" target="blank">http://127.0.0.1:5000/</a>
 
-##🧠 How It Works
+### 🧠 How It Works
 - Tasks are stored in a SQLite database
 - Each task contains:
   - Content
@@ -61,22 +63,22 @@ Flask routes handle:
 |/delete/<id>| Delete task|
 |/update/<id>| Update task|
 
-## ✨ Screenshots (Optional)
+### ✨ Screenshots (Optional)
 Add screenshots here to make it even more attractive
 
-## 🧑‍💻 Developer's Creed
+### 🧑‍💻 Developer's Creed
 > "1% better everyday is 3773% better by the end of the year"
 **- James Clear (from "Atomic Habits")**
 
-🔹 Write code that humans understand first, machines second
+🔹 Write code that humans understand first, machines second <br>
 🔹 Simplicity > Complexity
 🔹 Consistency builds mastery
 🔹 Ship, learn, improve, repeat
 
 
-##📬 Connect With Me
+### 📬 Connect With Me
 - 💼 LinkedIn: [Ayden Santhosh](https://www.linkedin.com/in/ayden-santhosh-b307b8355/)
 - 🐙 GitHub: [@aydensanthosh](https://github.com/aydensanthosh)
 
-## ⭐ Show Your Support
+### ⭐ Show Your Support
 If you like this project, give it a ⭐ on GitHub — it motivates me to build more!
