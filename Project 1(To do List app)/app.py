@@ -6,6 +6,12 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///To-Do-app.db'
 db=SQLAlchemy(app)
 
+def init_db():
+    """Initialize the database"""
+    with app.app_context():
+        db.create_all()
+        print("Database created!")
+
 class Todo(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     content=db.Column(db.String(200),nullable=False)
@@ -13,12 +19,6 @@ class Todo(db.Model):
     date_created=db.Column(db.DateTime,default=datetime.utcnow)
     def __repr__(self):
         return '<Task %r>' % self.id
-    
-def init_db():
-    """Initialize the database"""
-    with app.app_context():
-        db.create_all()
-        print("Database created!")
 
 # Define a route - this is the homepaged
 @app.route('/',methods=['POST','GET'])

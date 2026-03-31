@@ -1,11 +1,10 @@
 from flask import Flask, render_template, request, redirect
-from flask_scss import Scss
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 #My app
 app=Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///Personal Expense Tracker.db"
+app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///Personal-Expense-Tracker.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db=SQLAlchemy(app)
 
@@ -27,14 +26,11 @@ class Expenses(db.Model):
 @app.route('/',methods=['POST','GET'])
 def index():
     if request.method=="POST":
-        print (request)
         expense_amount=request.form['amount']
         expense_desc=request.form['description']
         expense_category=request.form['category']
-        expense_payment=request.form
-        ['payment_method']
-        dtae=datetime.utcnow()
-        New_Expense=Expenses(amount=expense_amount,description=expense_desc,category=expense_category,payment_method=expense_payment,created_at=dtae)
+        expense_payment=request.form['payment_method']
+        New_Expense=Expenses(amount=expense_amount,description=expense_desc,category=expense_category,payment_method=expense_payment)
         try:
             db.session.add(New_Expense)
             db.session.commit()
@@ -42,11 +38,35 @@ def index():
         except Exception as e:
             return f"there was an error {e}"
     else:
-        expense=Expenses.query.order_by(Expenses.created_at).all()
+        expense=Expenses.query.all()
         return render_template("index.html",expenses=expense)
 
+@app.route('/delete/<int:id>')
+def delete(id):
+    Mistake=Expenses.query.get_or_404(id)
+    try:
+        db.session.delete(Mistake)
+        db.session.commit()
+        return redirect('/')
+    except Exception as e:
+        return f"Some problem deleteing error, Error is :{e}"
 
-
+@app.route('/update/<int:id>',methods=['POST','GET'])
+def update(id):
+    Updatee=Expenses.query.get_or_404(id)
+    if request.method=='POST':
+        Updatee.amount=request.form['amount']
+        Updatee.description=request.form['description']
+        Updatee.category=request.form['category']
+        Updatee.payment_method=request.form['payment_method']
+        try:
+            db.session.commit()
+            return redirect('/')
+        except Exception as e:
+            return f"Some trouble Updating: {e}"
+    else:
+        return render_template('update.html',expense=Updatee)
 if __name__ == "__main__":
-    app.run(debug=True)
     init_db()
+    app.run(debug=True)
+    

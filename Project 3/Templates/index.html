@@ -8,22 +8,24 @@
 {% block body %}
 <div class="content">  <!-- Move the closing tag to the end -->
     {%if expenses|length < 1 %}
-    <h4>There aren't any expenses yet. Create one now!!</h4>
+    <h3>There aren't any expenses yet. Create one now!!</h3>
     {%else %}
-    <table>
+    <table style="border-style:solid;">
         <tr>
+            <th>Sr. No.</th>
             <th>Amount</th>
             <th>Description</th>
-            <th>Date:<br>(YYYY-MM-DD)</th>
-            <th>Added: <br>(YYYY-MM-DD)</th>
+            <th>Category</th>
+            <th>Date:</th>
             <th>Actions</th>
         </tr>
         {% for expense in expenses %}  <!-- Fixed variable name (expense not expenses) -->
         <tr>
+            <td>{{loop.index}}</td>
             <td>{{ expense.amount }}</td>
             <td>{{expense.description }}</td>
             <td>{{expense.category}}</td>
-            <td>{{ expense.created_at.date()}}</td>
+            <td>{{ expense.created_at.strftime('%d-%m-%Y')}}</td>
             <td>
                 <a href="/delete/{{expense.id}}">Delete</a>
                 <br>
@@ -32,9 +34,10 @@
         </tr>
         {% endfor %}
     </table>
+    <br><br>
     {%endif%}
     <form action="/" method="POST">
-        Amount:<input type="number" name="amount" id="amount" step="0.01">
+        Amount:<input type="number" name="amount" id="amount" step="1">
         <br><br>Description:<input type="text" name="description" id="description"><br><br>
         Category:
         <select name="category" id="category">
