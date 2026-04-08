@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Destinations - Travel Explorer{% endblock %}
+
+{% block destinations_active %}active{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Explore Destinations</h1>
+        <p>Discover amazing places around the world</p>
+    </div>
+</section>
+
+<section class="destinations-grid">
+    <div class="container">
+        <div class="filters" data-aos="fade-up">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="europe">Europe</button>
+            <button class="filter-btn" data-filter="asia">Asia</button>
+            <button class="filter-btn" data-filter="americas">Americas</button>
+            <button class="filter-btn" data-filter="africa">Africa</button>
+        </div>
+
+        <div class="destination-cards">
+            {% for destination in destinations %}
+            <div class="destination-card" data-aos="fade-up" data-category="{{ destination.category|default('europe') }}">
+                <div class="card-image">
+                    <img src="{{ url_for('static', filename='images/' + destination.image) }}" alt="{{ destination.name }}">
+                    <div class="card-overlay">
+                        <span class="price">${{ destination.price }}</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3>{{ destination.name }}</h3>
+                    <div class="rating">
+                        {% for i in range(5) %}
+                            {% if i < destination.rating|int %}
+                                <i class="fas fa-star"></i>
+                            {% elif i < destination.rating %}
+                                <i class="fas fa-star-half-alt"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span>{{ destination.rating }}</span>
+                    </div>
+                    <p>{{ destination.description }}</p>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary">View Details</a>
+                        <button class="btn-wishlist" onclick="addToWishlist('{{ destination.name }}')">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+.page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.page-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background: #f0f0f0;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.destination-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.btn-wishlist {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-wishlist:hover {
+    background: #ff6b6b;
+    color: white;
+    border-color: #ff6b6b;
+}
+</style>
+
+<script>
+function addToWishlist(destination) {
+    {% if current_user %}
+        fetch('/api/wishlist/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ destination: destination })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Added to wishlist!', 'success');
+            }
+        });
+    {% else %}
+        window.location.href = "{{ url_for('login') }}";
+    {% endif %}
+}  // ← Closing brace moved here, after the endif
+
+// Filter functionality
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelector('.filter-btn.active').classList.remove('active');
+        this.classList.add('active');
+        
+        const filter = this.dataset.filter;
+        
+        document.querySelectorAll('.destination-card').forEach(card => {
+            if (filter === 'all' || card.dataset.category === filter) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
